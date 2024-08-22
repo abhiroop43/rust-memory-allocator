@@ -25,6 +25,26 @@ impl BumpAllocator {
             std::ptr::null_mut()
         }
     }
+
+    pub fn alloc_aligned(&mut self, size: usize, align: usize) -> *mut u8 {
+        let current = self.bump_pointer as usize;
+        let aligned = (current + align - 1) & !(align - 1);
+        let offset = aligned - current;
+
+        let next_ptr = unsafe { self.bump_pointer.add(size + offset) };
+
+        if next_ptr <= self.memory_end {
+            self.bump_pointer = next_ptr;
+            aligned as *mut u8
+        } else {
+            std::ptr::null_mut()
+        }
+    }
+
+    // deallocation
+    pub fn reset(&mut self) {
+        self.bump_pointer = self.memory_start;
+    }
 }
 
 fn main() {
