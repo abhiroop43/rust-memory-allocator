@@ -87,6 +87,8 @@ fn main() {
 - `alloc_aligned(&mut self, size: usize, align: usize) -> *mut u8`: Allocates
   memory with a specified alignment.
 - `reset(&mut self)`: Resets the allocator, reclaiming all allocated memory.
+- `alloc_with_free_list(&mut self, size: usize) -> *mut u8`: Allocates memory
+  using a free list to manage memory blocks to mitigate memory fragmentation.
 
 ### Testing
 
